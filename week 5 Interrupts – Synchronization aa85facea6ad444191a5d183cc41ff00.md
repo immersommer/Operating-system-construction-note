@@ -45,6 +45,7 @@ an interrupt handler (IH) works differently than between processes?
 - Con:
     - Broadband effect : delay all interrupt handlers ctrl flows on same and lower level(bigger Nr)
     - Priority violation : delay ctrl flows with high priority.
+    - Pessimism : put up with disadvantages although the probability of a relevant interrupt is tiny.
 - Assessment:
     - Whether disadvantages become significant depends on the delays’
         - frequency
