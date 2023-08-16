@@ -5,19 +5,22 @@ Reviewed: No
 
 # Lecture 5
 
-### Why ensuring consistency between an application control flow (A) and
-an interrupt handler (IH) works differently than between processes?
+### Why does ensuring consistency between an application control flow (A) and an interrupt handler (IH) works differently than between processes?
 
 - Relationship between A and IH is asymmetric
-    - an application control flow and interrupt handling are different kinds” of control flows, i.e.,
+    - an application control flow and interrupt handlER are "different kinds" of control flows, i.e.,
     - IH interrupts A
         - implicitly, at an arbitrary point
-        - always higher priority, runs to completion
+        - always higher priority, runs to completion(If multiple control flows on one level are ready, they are
+executed sequentially)
     - A can suppress IH (better: delay)
         - explicitly, with `cli / sti`
 - Synchronization / maintenance of consistency is one-sided
 
 ### Control-Flow Level Model
+
+With `cli` can L0 control flow switch to L1, then other L1 control flows are delayed. 
+And with `sti` can L1 control flow switch to L0, then the delayed/pending L1 control flows get their turn now.
 
 ![Untitled](week%205%20Interrupts%20%E2%80%93%20Synchronization%20aa85facea6ad444191a5d183cc41ff00/Untitled.png)
 
@@ -40,8 +43,11 @@ an interrupt handler (IH) works differently than between processes?
 
 - Definition: access data structure on level f from level e with e < f using `cli` and `sti`
 - Pro:
-    - Maintains consistency : for complex data structures and access patterns also works and independent for compiler.
+    - Maintains consistency :
+      - for complex data structures and access patterns
+      - independent from what our compiler does.
     - Simple to use (for the developer), always works
+      - put all states in the highest-priority level.
 - Con:
     - Broadband effect : delay all interrupt handlers ctrl flows on same and lower level(bigger Nr)
     - Priority violation : delay ctrl flows with high priority.
