@@ -77,7 +77,7 @@ And with `sti` can L1 control flow switch to L0, then the delayed/pending L1 con
 - **See ppt to view concrete example**
 - Advantages:
     - Maintains consistency (by interrupt transparency)
-    - No priority violations (interrupts stay enabled!)
+    - No priority violations (interrupts stay enabled!)don't delay any higher priority control flows any more
     - No cost, or only in the (rare) conflict situation
         - no cost →bounded-buffer example
         - in the conflict situation→optimistic approaches, system-time example (additional cost by restarting)
@@ -154,7 +154,7 @@ And with `sti` can L1 control flow switch to L0, then the delayed/pending L1 con
         2. after processing the last epilogue
             - While processing epilogues, more epilogues may have accumulated.
         3. after the last interrupt handler terminates
-            - If we have a multi. level interrupt system, interrupt on higher level can interrupts on lower level. Therefore, epilogues may have accumulated. After the last interrupt handler terminates (CPU control flow will go back from level 1…n to 0), we have to execute padding epilogues,
+            - If we have a multi. level interrupt system, interrupt on higher level can interrupts on lower level. Therefore, epilogues may have accumulated. After the last interrupt handler terminates (CPU control flow will go back from level 1…n to 0), we have to execute pending epilogues,
     - Two implementation variants :
         - with hardware support via an AST
             
@@ -181,12 +181,12 @@ And with `sti` can L1 control flow switch to L0, then the delayed/pending L1 con
             ```
             
         - completely software-based
-    - Where are the padding epilogues stored?
+    - Where are the pending epilogues stored?
         
         ![Untitled](week%205%20Interrupts%20%E2%80%93%20Synchronization%20aa85facea6ad444191a5d183cc41ff00/Untitled%208.png)
         
-        - The the padding epilogues are stored in the epilogue queue that is resides on L1
-        - Again the queue is shared between L1/2 and L1.  In other words, when interrupt happens and trigger prologue,  which calls relay() to launch the epilogue or store the epilogue in the queue.  On the other hand,  after CPU executed epilogue and want to go back to level 0 (leave()), it need to check whether we still have padding epilogues in the queue.  Therefore we have to synchronize the access to the queue.
+        - The the pending epilogues are stored in the epilogue queue that is resides on L1
+        - Again the queue is shared between L1/2 and L1.  In other words, when interrupt happens and trigger prologue,  which calls relay() to launch the epilogue or store the epilogue in the queue.  On the other hand,  after CPU executed epilogue and want to go back to level 0 (leave()), it need to check whether we still have pending epilogues in the queue.  Therefore we have to synchronize the access to the queue.
             - Hard synchronisation:  put queue on L1, and do hard synchronisation when access this queue from L1/2.
             - nonblocking synchronization: put queue on L1/2 and do nonblocking synchronization when access the queue from level 1
                 - enqueue can interrupt dequeue
