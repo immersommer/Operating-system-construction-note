@@ -58,7 +58,7 @@ Reviewed: No
 1. What is Coroutine and  Coroutine control flow
     - Coroutine  is generalized routine, it is executed by a coroutine control flow, and it  **additionally** allows explicit suspend/resume
     - Coroutine control flow is a coroutine execution, and each Control flow has its own, independent state (register, stack …)
-    - Coroutines and coroutine control flows also have a schema instance relationship.
+    - Coroutines and coroutine control flows also have a **schema-instance relationship**.
 2. Basic Terminology:
     
     Coroutine control flows are created, managed and destroyed by additional primitives:
