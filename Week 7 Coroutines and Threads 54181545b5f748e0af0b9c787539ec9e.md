@@ -67,7 +67,7 @@ Reviewed: No
         - **creates**                   new coroutine execution <g> of g
     - resume
         - **suspends**                coroutine execution
-        - (re)**acticates**            coroutine execution
+        - (re)**activates**            coroutine execution
     - destory
         - **destorys**                  coroutine execution
 3. Coroutines is **Symmetric Continuation Model**
@@ -84,10 +84,20 @@ Reviewed: No
 
 **Q： Difference between coroutines and routine?**
 
-- Coroutine  is generalized routine, it  **additionally** allows explicit suspend/resume
+- Routine is a finite sequence of instructions. Coroutine  is generalized routine, it  **additionally** allows explicit suspend/resume
 - They have different control flow semantic. Compare to routine control flows, in the coroutine control flows, activation is temporally decoupled from creation,  and re-activation is temporally decoupled from destruction
 - Coroutines is **Symmetric Continuation Model,** Routines is a **Asymmetric Continuation Model**
 - Routine control flows form a continuation hierarchy, but each coroutine ctrl flow form a continuation sequence.
+- Activated control flows are continued following LIFO. All coroutine control flows are equitable.
+
+**Coroutines and Threads**
+- Coroutine control flows are also called
+  - cooperative threads: Courontine has to cooperatively  pass on the CPU to another coroutine from time to time, If it doesn't happen, that coroutine simply continues or that control flow simply continues executing.
+  - fibers: Windows ter for Coroutines.
+- Coroutine is a language concept. Multithreading is an operating-system concept
+- in OSC we understand coroutines as a technical means:
+  - to implement multithreading in the OS
+  - in later also non-cooperative threads
 
 ## Implementing Coroutines
 
