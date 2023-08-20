@@ -46,7 +46,7 @@ Reviewed: No
             
     - **Q:  Why this model doesn’t work?**
         
-        The OS bookkeep the ready thread in the list. In Preemptive multi tasking, both L0 thread and L1 interrupt handler can access the list through resume(). Thus, we have to do synchronization on the data structure. 
+        The OS bookkeep the ready thread in the list. In Preemptive multitasking, both L0 thread and L1 interrupt handler can access the list through resume(). Thus, we have to do synchronization on the data structure. 
         
 6. **Thread Switch in the Epilogue** 
     
@@ -54,7 +54,7 @@ Reviewed: No
     
     - Scheduler data (list of ready threads) reside on the epilogue level
     - All system functions that manipulate these data must acquire the epilogue lock before (enter/leave)
-    - Create thread, terminate thread, voluntary thread switch, …
+      - Create thread, terminate thread, voluntary thread switch, …
     
     Basic rule for thread switches:
     
@@ -62,7 +62,8 @@ Reviewed: No
     - the activated thread must release the lock
     
     Corner case:
-    
+
+    - Never call enter from the epilogue (double request)
     - Basic rule (see above) also holds for the first thread activation(!), See:
     - In kickoff:
         
